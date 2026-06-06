@@ -1,23 +1,19 @@
 FROM python:3.12-slim
 
-# Evita .pyc e deixa logs aparecerem em tempo real no terminal
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# Instala dependências do sistema necessárias para o psycopg2
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copia e instala dependências Python primeiro
-# (camada separada — só rebuilda se o requirements mudar)
 COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia o restante do código
 COPY . .
 
 EXPOSE 8000
