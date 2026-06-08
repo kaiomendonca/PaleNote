@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.core.lifespan import lifespan
+from app.routers.health import router as health_router
 
 openapi_tags = [
     {
@@ -49,3 +50,5 @@ app = FastAPI(
     redoc_url="/redoc",
     openapi_url="/openapi.json",
 )
+
+app.include_router(health_router, prefix="/health")
