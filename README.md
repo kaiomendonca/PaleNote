@@ -38,13 +38,33 @@ The project name refers to the idea of preserving fiscal documents in digital fo
 
 ## Running locally
 
-### 1. Install dependencies
+### 1. Install Poetry
+
+If you do not have Poetry installed yet, use one of the options below:
+
+```bash
+python -m pip install --user poetry
+```
+
+Or, for the official installer:
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+Verify the installation:
+
+```bash
+poetry --version
+```
+
+### 2. Install dependencies
 
 ```bash
 poetry install --with dev
 ```
 
-### 2. Configure environment variables
+### 3. Configure environment variables
 
 Create a `.env` file with the required variables, using `.env.example` as a reference.
 
@@ -56,7 +76,7 @@ LOG_LEVEL=INFO
 ENVIRONMENT=development
 ```
 
-### 3. Run the API
+### 4. Run the API
 
 ```bash
 poetry run task dev
