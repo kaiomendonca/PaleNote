@@ -9,20 +9,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configurar Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Instalar dependências
+      - name: Install Poetry
         run: |
-            poetry install --with dev --no-interaction
+          python -m pip install --upgrade pip
+          pip install poetry
 
-      - name: Rodar lint
+      - name: Install dependencies
+        run: |
+          poetry install --with dev --no-interaction
+
+      - name: Run lint
         run: poetry run task lint
 
-      - name: Rodar testes
+      - name: Run tests
         run: poetry run task test
