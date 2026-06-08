@@ -1,0 +1,28 @@
+name: CI - Quality and Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar dependências
+        run: |
+            poetry install --with dev --no-interaction
+
+      - name: Rodar lint
+        run: poetry run task lint
+
+      - name: Rodar testes
+        run: poetry run task test
