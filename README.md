@@ -146,18 +146,6 @@ poetry run task lint
 poetry run task format
 ```
 
-## CI/CD
-
-The project already includes a basic GitHub Actions workflow in:
-
-- .github/workflows/quality-and-tests.yml
-
-This workflow runs:
-
-- dependency installation with Poetry
-- lint with Ruff
-- tests with Pytest
-
 ## Current status
 
 The project already includes:
@@ -165,7 +153,6 @@ The project already includes:
 - the base structure of the FastAPI API
 - PostgreSQL integration
 - test and lint setup
-- CI configuration with GitHub Actions
 - Docker containerization
 
 It is still evolving in terms of business endpoints, which are being structured in the routes and services.
