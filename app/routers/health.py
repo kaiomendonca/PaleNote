@@ -7,15 +7,15 @@ from sqlalchemy.orm import Session
 
 from app.dependencies import get_db
 
-router = APIRouter()
+router = APIRouter(prefix="/health", tags=["health"])
 
 
-@router.get("/api", tags=["health"], summary="API health check")
+@router.get("/api", summary="API health check")
 def health_api():
     return {"status": "ok", "service": "api"}
 
 
-@router.get("/db", tags=["health"], summary="Health check from the database")
+@router.get("/db", summary="Health check from the database")
 def health_db(db: Annotated[Session, Depends(get_db)]):
     try:
         db.execute(text("SELECT 1"))

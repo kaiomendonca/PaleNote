@@ -51,4 +51,4 @@ app = FastAPI(
     openapi_url="/openapi.json",
 )
 
-app.include_router(health_router, prefix="/health")
+app.include_router(health_router)
