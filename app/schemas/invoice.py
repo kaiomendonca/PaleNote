@@ -19,3 +19,18 @@ class InvoiceCreate(BaseModel):
     recipient_document: str = Field(min_length=11, max_length=14)
 
     items: list[InvoiceItem]
+
+
+class InvoiceResponse(BaseModel):
+    pass
+
+
+class NFEAccessKeyData(BaseModel):
+    uf_code: str
+    issue_date: str
+    issuer_cnpj: str
+    model: str
+    series: str
+    invoice_number: str
+    numeric_code: str
+    check_digit: str
