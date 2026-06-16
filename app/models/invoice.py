@@ -46,6 +46,8 @@ class Invoice(Base):
 
     pdf_path: Mapped[str | None] = mapped_column(String(500), nullable=True)
 
+    issued_at: Mapped[str] = mapped_column(String, nullable=False)
+
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
     update_at: Mapped[datetime] = mapped_column(
