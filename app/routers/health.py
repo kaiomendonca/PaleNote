@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dependencies import get_db
 
@@ -16,9 +16,9 @@ def health_api():
 
 
 @router.get("/db", summary="Health check from the database")
-def health_db(db: Annotated[Session, Depends(get_db)]):
+async def health_db(db: Annotated[AsyncSession, Depends(get_db)]):
     try:
-        db.execute(text("SELECT 1"))
+        await db.execute(text("SELECT 1"))
         return {"status": "ok", "service": "db"}
     except SQLAlchemyError as exc:
         raise HTTPException(
