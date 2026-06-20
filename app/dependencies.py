@@ -1,24 +1,24 @@
-from collections.abc import Generator
+from collections.abc import AsyncGenerator
 from typing import Annotated
 
 from fastapi import Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.session import SessionLocal
+from app.database.session import AsyncSessionLocal
 from app.services.invoice_service import InvoiceService
 
 
-def get_db() -> Generator[Session, None, None]:
-    db = SessionLocal()
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
     try:
+        db = AsyncSessionLocal()
         yield db
-        db.commit()
+        await db.commit()
     except Exception:
-        db.rollback()
+        await db.rollback()
         raise
     finally:
-        db.close()
+        await db.close()
 
 
-def get_invoice_service(db: Annotated[Session, Depends(get_db)]) -> InvoiceService:
+def get_invoice_service(db: Annotated[AsyncSession, Depends(get_db)]) -> InvoiceService:
     return InvoiceService(db)
