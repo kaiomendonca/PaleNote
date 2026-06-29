@@ -9,5 +9,5 @@ Printable representation of NF-e.
 SEFAZ:
 Brazilian tax authority.
 
-Chave de acesso:
+Access key:
 44-digit unique invoice identifier.
