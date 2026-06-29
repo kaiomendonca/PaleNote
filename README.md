@@ -36,6 +36,12 @@ The project name refers to the idea of preserving fiscal documents in digital fo
 - app/tests/: automated tests
 - .github/workflows/: CI/CD with GitHub Actions
 
+## Initial processing architecture
+
+<p align="center">
+  <img src="docs/processing_architecture.png" alt="System Design" width="900">
+</p>
+
 ## Running locally
 
 ### 1. Install Poetry
@@ -71,9 +77,15 @@ Create a `.env` file with the required variables, using `.env.example` as a refe
 Minimal example:
 
 ```env
-DATABASE_URL=postgresql+psycopg2://usuario:senha@localhost:5432/db
+POSTGRES_USER=user
+POSTGRES_PASSWORD=passwordhere
+POSTGRES_DB=database
+DATABASE_URL=postgresql+asyncpg://user:passwordhere@db:5432/database
 LOG_LEVEL=INFO
 ENVIRONMENT=development
+REDIS_URL=redis://localhost:6379/0
+SECRET_KEY=
+
 ```
 
 ### 4. Run the API
