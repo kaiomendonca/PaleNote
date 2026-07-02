@@ -6,3 +6,12 @@ repos:
         args: [--fix]
 
       - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: task-test
+        name: task test
+        entry: poetry run task test
+        language: system
+        pass_filenames: false
+        always_run: true
