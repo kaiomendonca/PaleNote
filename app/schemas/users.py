@@ -43,7 +43,6 @@ class UserResponse(BaseModel):
 class UserUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=3, max_length=200)
     email: Optional[EmailStr] = None
-    person_type: Optional[PersonType] = None
     document: Optional[str] = Field(None, min_length=11, max_length=14)
 
 
