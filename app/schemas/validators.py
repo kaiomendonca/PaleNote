@@ -2,6 +2,7 @@ import re
 
 from validate_docbr import CNPJ, CPF
 
+from app.core.user_exceptions import InvalidDocument
 from app.core.validator_exceptions import IncorrectPassword
 
 cpf = CPF()
@@ -74,3 +75,19 @@ class DocumentValidator:
         calculated_dv = 0 if remainder in (0, 1) else 11 - remainder
 
         return calculated_dv == provided_dv
+
+    @staticmethod
+    def validate_document(document: str) -> bool:
+        clean_document = "".join(char for char in document if char.isdigit())
+
+        if len(clean_document) == 11:
+            if not cpf.validate(clean_document):
+                raise InvalidDocument()
+            return True
+
+        if len(clean_document) == 14:
+            if not cnpj.validate(clean_document):
+                raise InvalidDocument()
+            return True
+
+        raise InvalidDocument()

@@ -1,5 +1,6 @@
 import pytest
 
+from app.core.user_exceptions import InvalidDocument
 from app.core.validator_exceptions import IncorrectPassword
 from app.schemas.validators import DocumentValidator, FieldValidator
 from app.services.document_validator import extract_nfe_access_key_data
@@ -47,6 +48,26 @@ class TestFieldValidator:
 
 class TestDocumentValidator:
     """Test suite for DocumentValidator class"""
+
+    def test_validate_document_accepts_valid_cpf_and_strips_special_characters(self):
+        """Test validation returns True for a valid CPF with special characters"""
+        result = DocumentValidator.validate_document("123.456.789-09")
+        assert result is True
+
+    def test_validate_document_accepts_valid_cnpj_and_strips_special_characters(self):
+        """Test validation returns True for a valid CNPJ with special characters"""
+        result = DocumentValidator.validate_document("11.222.333/0001-81")
+        assert result is True
+
+    def test_validate_document_raises_for_invalid_document(self):
+        """Test validation raises InvalidDocument for an invalid document"""
+        with pytest.raises(InvalidDocument):
+            DocumentValidator.validate_document("123.456.789-00")
+
+    def test_validate_document_raises_for_unknown_length(self):
+        """Test validation raises InvalidDocument for unsupported length"""
+        with pytest.raises(InvalidDocument):
+            DocumentValidator.validate_document("123456789")
 
     def test_validate_invoice_documents_with_valid_cnpj_and_cpf(self):
         """Test validation with valid issuer CNPJ and recipient CPF"""

@@ -22,3 +22,10 @@ class UserInvalidError(AppException):
         super().__init__(
             detail="Invalid e-mail", error_code="USER_INVALID_ERROR", status_code=400
         )
+
+
+class InvalidDocument(AppException):
+    def __init__(self):
+        super().__init__(
+            detail="Invalid Document", error_code="INVALID_DOCUMENT", status_code=400
+        )

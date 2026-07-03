@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 from app.models.users import PersonType
+from app.schemas.validators import DocumentValidator
 
 
 class UserCreate(BaseModel):
@@ -27,8 +28,15 @@ class UserCreate(BaseModel):
         description="Individual taxpayer ID (CPF) or corporate taxpayer ID (CNPJ)",
     )
 
+    @field_validator
+    @classmethod
+    def validate_documents(cls, value: str) -> str:
+        return DocumentValidator.validate_document(value)
+
 
 class UserResponse(BaseModel):
+    id_: str = Field(alias="id", serialization_alias="id")
+
     name: str
 
     email: EmailStr
