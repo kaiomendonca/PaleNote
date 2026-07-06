@@ -2,7 +2,11 @@ import re
 
 from validate_docbr import CNPJ, CPF
 
-from app.core.user_exceptions import InvalidDocument
+from app.core.user_exceptions import (
+    InvalidDocument,
+    MatchingPasswords,
+    PasswordNotMatch,
+)
 from app.core.validator_exceptions import IncorrectPassword
 
 cpf = CPF()
@@ -21,6 +25,16 @@ class FieldValidator:
             raise IncorrectPassword()
 
         return value
+
+    @staticmethod
+    def checks_if_password_match(confirm_new_password: str, new_password: str) -> None:
+        if new_password != confirm_new_password:
+            raise PasswordNotMatch()
+
+    @staticmethod
+    def new_password_must_differ(current_password: str, new_password: str) -> None:
+        if current_password == new_password:
+            raise MatchingPasswords()
 
 
 class DocumentValidator:
