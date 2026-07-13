@@ -20,7 +20,7 @@ class UploadFailedError(AppException):
 class UserInvalidError(AppException):
     def __init__(self):
         super().__init__(
-            detail="Invalid e-mail", error_code="USER_INVALID_ERROR", status_code=400
+            detail="Invalid user", error_code="USER_INVALID_ERROR", status_code=400
         )
 
 
