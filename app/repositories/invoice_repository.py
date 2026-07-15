@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.logger import get_logger
 from app.models.invoice import Invoice
 
-logger = get_logger("app.db.invoice")
+logger = get_logger(__name__)
 
 
 class InvoiceRepository:
