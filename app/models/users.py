@@ -2,8 +2,8 @@ import uuid
 from datetime import datetime
 from enum import Enum
 
-from pydantic import EmailStr
 from sqlalchemy import DateTime, String, func
+from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -26,10 +26,10 @@ class Users(Base):
 
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    email: Mapped[EmailStr] = mapped_column(EmailStr, unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
 
     person_type: Mapped[PersonType] = mapped_column(
-        PersonType,
+        SQLEnum(PersonType),
         nullable=False,
     )
 
