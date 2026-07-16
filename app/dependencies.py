@@ -5,6 +5,7 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import AsyncSessionLocal
+from app.repositories.user_repository import UserRepository
 from app.services.invoice_service import InvoiceService
 
 
@@ -22,3 +23,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 def get_invoice_service(db: Annotated[AsyncSession, Depends(get_db)]) -> InvoiceService:
     return InvoiceService(db)
+
+
+def get_user_repository(db: Annotated[AsyncSession, Depends(get_db)]) -> UserRepository:
+    return UserRepository(db)
