@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
+class __Settings(BaseSettings):
     DATABASE_URL: str
     LOG_LEVEL: str
     ENVIRONMENT: str
@@ -9,4 +9,4 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 
-settings = Settings()
+settings = __Settings()
