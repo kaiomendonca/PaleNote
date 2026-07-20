@@ -1,7 +1,7 @@
-from app.core.app_exception import AppException
+from app.core.app_exception import AppExceptionError
 
 
-class UserCreationError(AppException):
+class UserCreationError(AppExceptionError):
     def __init__(self):
         super().__init__(
             detail="User cannot be created",
@@ -10,28 +10,28 @@ class UserCreationError(AppException):
         )
 
 
-class UploadFailedError(AppException):
+class UploadFailedError(AppExceptionError):
     def __init__(self):
         super().__init__(
             detail="Upload failed", error_code="UPLOAD_FAILED", status_code=500
         )
 
 
-class UserInvalidError(AppException):
+class UserInvalidError(AppExceptionError):
     def __init__(self):
         super().__init__(
             detail="Invalid user", error_code="USER_INVALID_ERROR", status_code=400
         )
 
 
-class InvalidDocument(AppException):
+class InvalidDocumentError(AppExceptionError):
     def __init__(self):
         super().__init__(
             detail="Invalid Document", error_code="INVALID_DOCUMENT", status_code=400
         )
 
 
-class PasswordNotMatch(AppException):
+class PasswordNotMatchError(AppExceptionError):
     def __init__(self):
         super().__init__(
             detail="The passwords do not match",
@@ -40,7 +40,7 @@ class PasswordNotMatch(AppException):
         )
 
 
-class MatchingPasswords(AppException):
+class MatchingPasswordsError(AppExceptionError):
     def __init__(self):
         super().__init__(
             detail="The passwords cannot be the same",

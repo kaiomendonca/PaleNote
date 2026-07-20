@@ -1,7 +1,7 @@
-from app.core.app_exception import AppException
+from app.core.app_exception import AppExceptionError
 
 
-class IncorrectPassword(AppException):
+class IncorrectPasswordError(AppExceptionError):
     def __init__(self):
         super().__init__(
             detail="The password must have at least 8 characters,"

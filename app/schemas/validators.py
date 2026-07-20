@@ -3,11 +3,11 @@ import re
 from validate_docbr import CNPJ, CPF
 
 from app.core.user_exceptions import (
-    InvalidDocument,
-    MatchingPasswords,
-    PasswordNotMatch,
+    InvalidDocumentError,
+    MatchingPasswordsError,
+    PasswordNotMatchError,
 )
-from app.core.validator_exceptions import IncorrectPassword
+from app.core.validator_exceptions import IncorrectPasswordError
 
 cpf = CPF()
 cnpj = CNPJ()
@@ -22,19 +22,19 @@ class FieldValidator:
             or not re.search(r"[a-z]", value)
             or not re.search(r"\d", value)
         ):
-            raise IncorrectPassword()
+            raise IncorrectPasswordError()
 
         return value
 
     @staticmethod
     def checks_if_password_match(confirm_new_password: str, new_password: str) -> None:
         if new_password != confirm_new_password:
-            raise PasswordNotMatch()
+            raise PasswordNotMatchError()
 
     @staticmethod
     def new_password_must_differ(current_password: str, new_password: str) -> None:
         if current_password == new_password:
-            raise MatchingPasswords()
+            raise MatchingPasswordsError()
 
 
 class DocumentValidator:
@@ -96,12 +96,12 @@ class DocumentValidator:
 
         if len(clean_document) == 11:
             if not cpf.validate(clean_document):
-                raise InvalidDocument()
+                raise InvalidDocumentError()
             return True
 
         if len(clean_document) == 14:
             if not cnpj.validate(clean_document):
-                raise InvalidDocument()
+                raise InvalidDocumentError()
             return True
 
-        raise InvalidDocument()
+        raise InvalidDocumentError()

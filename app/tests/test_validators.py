@@ -1,7 +1,7 @@
 import pytest
 
-from app.core.user_exceptions import InvalidDocument
-from app.core.validator_exceptions import IncorrectPassword
+from app.core.user_exceptions import InvalidDocumentError
+from app.core.validator_exceptions import IncorrectPasswordError
 from app.schemas.validators import DocumentValidator, FieldValidator
 from app.services.document_validator import extract_nfe_access_key_data
 
@@ -18,25 +18,25 @@ class TestFieldValidator:
     def test_validate_password_characters_without_uppercase(self):
         """Test validation fails without uppercase letter"""
         invalid_password = "securepass123"
-        with pytest.raises(IncorrectPassword):
+        with pytest.raises(IncorrectPasswordError):
             FieldValidator.validate_password_characters(invalid_password)
 
     def test_validate_password_characters_without_lowercase(self):
         """Test validation fails without lowercase letter"""
         invalid_password = "SECUREPASS123"
-        with pytest.raises(IncorrectPassword):
+        with pytest.raises(IncorrectPasswordError):
             FieldValidator.validate_password_characters(invalid_password)
 
     def test_validate_password_characters_without_digit(self):
         """Test validation fails without digit"""
         invalid_password = "SecurePassAbc"
-        with pytest.raises(IncorrectPassword):
+        with pytest.raises(IncorrectPasswordError):
             FieldValidator.validate_password_characters(invalid_password)
 
     def test_validate_password_characters_too_short(self):
         """Test validation fails with password shorter than 8 characters"""
         invalid_password = "Pass12"
-        with pytest.raises(IncorrectPassword):
+        with pytest.raises(IncorrectPasswordError):
             FieldValidator.validate_password_characters(invalid_password)
 
     def test_validate_password_characters_with_special_characters(self):
@@ -61,12 +61,12 @@ class TestDocumentValidator:
 
     def test_validate_document_raises_for_invalid_document(self):
         """Test validation raises InvalidDocument for an invalid document"""
-        with pytest.raises(InvalidDocument):
+        with pytest.raises(InvalidDocumentError):
             DocumentValidator.validate_document("123.456.789-00")
 
     def test_validate_document_raises_for_unknown_length(self):
         """Test validation raises InvalidDocument for unsupported length"""
-        with pytest.raises(InvalidDocument):
+        with pytest.raises(InvalidDocumentError):
             DocumentValidator.validate_document("123456789")
 
     def test_validate_invoice_documents_with_valid_cnpj_and_cpf(self):
