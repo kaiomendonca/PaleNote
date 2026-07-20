@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, UploadFile
 
-from app.core.logger import get_logger
+from app.core.logging import get_logger
 from app.dependencies import get_invoice_service
 from app.services.invoice_service import InvoiceService
 
