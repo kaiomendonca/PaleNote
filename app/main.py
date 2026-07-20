@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 
+from app.core.app_exception import AppExceptionError
 from app.core.handlers import app_exception_handler
 from app.core.lifespan import lifespan
-from app.core.user_exceptions import AppException
+from app.core.logging import configure_logging
 from app.routers.health import router as health_router
+
+configure_logging()
 
 openapi_tags = [
     {
@@ -53,6 +56,6 @@ app = FastAPI(
     openapi_url="/openapi.json",
 )
 
-app.add_exception_handler(AppException, app_exception_handler)
+app.add_exception_handler(AppExceptionError, app_exception_handler)
 
 app.include_router(health_router)
