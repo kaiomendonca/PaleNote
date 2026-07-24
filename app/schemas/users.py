@@ -1,7 +1,14 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_validator,
+    model_validator,
+)
 
 from app.models.users import PersonType
 from app.schemas.validators import DocumentValidator, FieldValidator
@@ -51,6 +58,8 @@ class UserResponse(BaseModel):
     document: str
 
     created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserUpdate(BaseModel):
