@@ -29,7 +29,7 @@ class UserCreate(BaseModel):
     document: str = Field(
         ...,
         min_length=11,
-        max_length=14,
+        max_length=18,
         description="Individual taxpayer ID (CPF) or corporate taxpayer ID (CNPJ)",
     )
 
