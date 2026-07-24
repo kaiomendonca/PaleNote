@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import exists, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.users import Users
@@ -30,3 +30,15 @@ class UserRepository:
         result = await self.db.execute(query)
         user = result.scalar_one_or_none()
         user.password_hash = password
+
+    async def exists_by_email(self, email: str) -> bool:
+        query = select(exists().where(Users.email == email))
+        result = await self.db.execute(query)
+
+        return result.scalar()
+
+    async def exists_by_document(self, document: str) -> bool:
+        query = select(exists().where(Users.document == document))
+        result = await self.db.execute(query)
+
+        return result.scalar()
