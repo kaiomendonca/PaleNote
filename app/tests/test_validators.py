@@ -52,12 +52,12 @@ class TestDocumentValidator:
     def test_validate_document_accepts_valid_cpf_and_strips_special_characters(self):
         """Test validation returns True for a valid CPF with special characters"""
         result = DocumentValidator.validate_document("123.456.789-09")
-        assert result is True
+        assert result == "12345678909"
 
     def test_validate_document_accepts_valid_cnpj_and_strips_special_characters(self):
         """Test validation returns True for a valid CNPJ with special characters"""
         result = DocumentValidator.validate_document("11.222.333/0001-81")
-        assert result is True
+        assert result == "11222333000181"
 
     def test_validate_document_raises_for_invalid_document(self):
         """Test validation raises InvalidDocument for an invalid document"""

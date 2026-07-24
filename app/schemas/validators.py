@@ -91,17 +91,17 @@ class DocumentValidator:
         return calculated_dv == provided_dv
 
     @staticmethod
-    def validate_document(document: str) -> bool:
+    def validate_document(document: str) -> str:
         clean_document = "".join(char for char in document if char.isdigit())
 
         if len(clean_document) == 11:
             if not cpf.validate(clean_document):
                 raise InvalidDocumentError()
-            return True
+            return clean_document
 
         if len(clean_document) == 14:
             if not cnpj.validate(clean_document):
                 raise InvalidDocumentError()
-            return True
+            return clean_document
 
         raise InvalidDocumentError()
