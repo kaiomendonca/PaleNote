@@ -47,3 +47,12 @@ class MatchingPasswordsError(AppExceptionError):
             error_code="MACHING_PASSWORDS",
             status_code=400,
         )
+
+
+class EmailAlreadyExistsError(AppExceptionError):
+    def __init__(self):
+        super().__init__(
+            detail="Email Already Exists",
+            error_code="EMAIL_ALREADY_EXISTS",
+            status_code=400,
+        )
