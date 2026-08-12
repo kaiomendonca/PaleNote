@@ -24,6 +24,13 @@ class UserInvalidError(AppExceptionError):
         )
 
 
+class UserNotFoundError(AppExceptionError):
+    def __init__(self):
+        super().__init__(
+            detail="User not found", error_code="USER_NOT_FOUND", status_code=404
+        )
+
+
 class InvalidDocumentError(AppExceptionError):
     def __init__(self):
         super().__init__(
