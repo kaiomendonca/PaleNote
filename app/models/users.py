@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from enum import Enum
 
-from sqlalchemy import DateTime, String, func
+from sqlalchemy import Boolean, DateTime, String, func, true
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
@@ -33,6 +33,12 @@ class Users(Base):
         nullable=False,
     )
 
-    document: Mapped[str] = mapped_column(String(14), index=True, nullable=False)
+    document: Mapped[str] = mapped_column(
+        String(14), unique=True, index=True, nullable=False
+    )
 
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, default=True, server_default=true(), nullable=False
+    )
