@@ -70,14 +70,8 @@ class TestUserRepository:
         db = make_async_session_mock()
         repository = UserRepository(db)
         existing_user = SimpleNamespace(password_hash="old_hash")
-        query_result = MagicMock()
-        query_result.scalar_one_or_none.return_value = existing_user
-        db.execute.return_value = query_result
 
-        asyncio.run(repository.update_password("user-id", "new_hash"))
+        asyncio.run(repository.update_password(existing_user, "new_hash"))
 
         assert existing_user.password_hash == "new_hash"
-        db.execute.assert_awaited_once()
-        actual_query = db.execute.await_args.args[0]
-        expected_query = select(Users).where(Users.id_ == "user-id")
-        assert str(actual_query) == str(expected_query)
+        db.execute.assert_not_awaited()
