@@ -65,7 +65,12 @@ class UserResponse(BaseModel):
 class UserUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=3, max_length=200)
     email: Optional[EmailStr] = None
-    document: Optional[str] = Field(None, min_length=11, max_length=14)
+    document: Optional[str] = Field(None, min_length=11, max_length=18)
+
+    @field_validator("document")
+    @classmethod
+    def validate_documents(cls, document: str) -> str:
+        return DocumentValidator.validate_document(document)
 
 
 class ChangePassword(BaseModel):
