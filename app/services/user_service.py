@@ -3,7 +3,7 @@ from app.core.user_exceptions import (
     EmailAlreadyExistsError,
     InvalidDocumentError,
     PasswordNotMatchError,
-    UserInvalidError,
+    UserNotFoundError,
 )
 from app.models.users import Users
 from app.repositories.user_repository import UserRepository
@@ -39,10 +39,10 @@ class UserService:
 
         return UserResponse.model_validate(created_user)
 
-    async def change_password(self, user_id: str, payload: ChangePassword) -> None:
-        user = await self.repository.get_by_id(user_id)
+    async def change_password(self, document: str, payload: ChangePassword) -> None:
+        user = await self.repository.get_by_document(document)
         if not user:
-            raise UserInvalidError()
+            raise UserNotFoundError()
 
         if not verify_password(
             payload.current_password,
@@ -51,4 +51,4 @@ class UserService:
             raise PasswordNotMatchError()
 
         new_hash = hash_password(payload.new_password)
-        await self.repository.update_password(user_id, new_hash)
+        await self.repository.update_password(user, new_hash)

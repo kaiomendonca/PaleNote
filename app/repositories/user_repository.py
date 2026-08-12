@@ -38,12 +38,8 @@ class UserRepository:
         result = await self.db.execute(query)
         return list(result.scalars().all())
 
-    async def update_password(self, user_id: str, password_hash: str) -> None:
-        query = select(Users).where(Users.id_ == user_id)
-        result = await self.db.execute(query)
-        user = result.scalar_one_or_none()
-        if user:
-            user.password_hash = password_hash
+    async def update_password(self, user: Users, password_hash: str) -> None:
+        user.password_hash = password_hash
 
     async def update_user(self, user: Users, fields: dict[str, Any]) -> Users:
         for key, value in fields.items():
