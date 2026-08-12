@@ -41,7 +41,10 @@ class TestUserRepository:
         assert actual_user is expected_user
         db.execute.assert_awaited_once()
         actual_query = db.execute.await_args.args[0]
-        expected_query = select(Users).where(Users.document == "12345678901")
+        expected_query = select(Users).where(
+            Users.document == "12345678901",
+            Users.is_active.is_(True),
+        )
         assert str(actual_query) == str(expected_query)
 
     def test_get_by_email_executes_query_and_returns_user(self):
@@ -57,7 +60,10 @@ class TestUserRepository:
         assert actual_user is expected_user
         db.execute.assert_awaited_once()
         actual_query = db.execute.await_args.args[0]
-        expected_query = select(Users).where(Users.email == "test@example.com")
+        expected_query = select(Users).where(
+            Users.email == "test@example.com",
+            Users.is_active.is_(True),
+        )
         assert str(actual_query) == str(expected_query)
 
     def test_update_password_updates_password_hash(self):
