@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 from sqlalchemy import Boolean, DateTime, String, func, true
@@ -37,7 +37,11 @@ class Users(Base):
         String(14), unique=True, index=True, nullable=False
     )
 
-    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        server_default=func.now(),
+    )
 
     is_active: Mapped[bool] = mapped_column(
         Boolean, default=True, server_default=true(), nullable=False

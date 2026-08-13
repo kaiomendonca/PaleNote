@@ -47,7 +47,7 @@ class UserCreate(BaseModel):
 
 
 class UserResponse(BaseModel):
-    id_: str = Field(alias="id", serialization_alias="id")
+    id_: str
 
     name: str
 
