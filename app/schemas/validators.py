@@ -105,3 +105,23 @@ class DocumentValidator:
             return clean_document
 
         raise InvalidDocumentError()
+
+    @staticmethod
+    def mask_document(document: str) -> str:
+        clean_document = "".join(char for char in document if char.isdigit())
+
+        if len(clean_document) == 11:
+            return f"{clean_document[:3]}.***.***-{clean_document[9:]}"
+
+        if len(clean_document) == 14:
+            branch = clean_document[8:12]
+            check_digits = clean_document[12:14]
+            return f"{clean_document[:2]}.***.***/{branch}-{check_digits}"
+
+        return "***"
+
+    @staticmethod
+    def mask_access_key(access_key: str | None) -> str:
+        if not access_key or len(access_key) < 12:
+            return "***"
+        return f"{access_key[:8]}...{access_key[-4:]}"

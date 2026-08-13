@@ -61,6 +61,11 @@ class UserResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+    @field_validator("document")
+    @classmethod
+    def mask_document(cls, document: str) -> str:
+        return DocumentValidator.mask_document(document)
+
 
 class UserUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=3, max_length=200)
