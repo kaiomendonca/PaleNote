@@ -2,7 +2,6 @@ from app.core.security import hash_password, verify_password
 from app.core.user_exceptions import (
     EmailAlreadyExistsError,
     InvalidDocumentError,
-    PasswordNotMatchError,
     UserNotFoundError,
 )
 from app.models.users import Users
@@ -50,11 +49,7 @@ class UserService:
         if not user:
             raise UserNotFoundError()
 
-        if not verify_password(
-            payload.current_password,
-            user.password_hash,
-        ):
-            raise PasswordNotMatchError()
+        verify_password(payload.current_password, user.password_hash)
 
         new_hash = hash_password(payload.new_password)
         await self.repository.update_password(user, new_hash)

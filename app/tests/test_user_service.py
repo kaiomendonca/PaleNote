@@ -9,7 +9,7 @@ from app.core.security import hash_password, verify_password
 from app.core.user_exceptions import (
     EmailAlreadyExistsError,
     InvalidDocumentError,
-    PasswordNotMatchError,
+    InvalidPasswordError,
     UserNotFoundError,
 )
 from app.models.users import PersonType, Users
@@ -157,7 +157,7 @@ class TestChangePassword:
             confirm_new_password="NewPass456",
         )
 
-        with pytest.raises(PasswordNotMatchError):
+        with pytest.raises(InvalidPasswordError):
             asyncio.run(service.change_password("12345678909", payload))
 
         repository.update_password.assert_not_called()

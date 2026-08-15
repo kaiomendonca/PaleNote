@@ -47,6 +47,13 @@ class PasswordNotMatchError(AppExceptionError):
         )
 
 
+class InvalidPasswordError(AppExceptionError):
+    def __init__(self):
+        super().__init__(
+            detail="Invalid password", error_code="INVALID_PASSWORD", status_code=400
+        )
+
+
 class MatchingPasswordsError(AppExceptionError):
     def __init__(self):
         super().__init__(
