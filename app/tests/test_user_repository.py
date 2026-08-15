@@ -75,3 +75,47 @@ class TestUserRepository:
 
         assert existing_user.password_hash == "new_hash"
         db.execute.assert_not_awaited()
+
+    def test_list_all_returns_only_active_users(self):
+        db = make_async_session_mock()
+        repository = UserRepository(db)
+        users = [SimpleNamespace(name="Alice"), SimpleNamespace(name="Bob")]
+        query_result = MagicMock()
+        query_result.scalars.return_value.all.return_value = users
+        db.execute.return_value = query_result
+
+        result = asyncio.run(repository.list_all())
+
+        assert result == users
+        db.execute.assert_awaited_once()
+        actual_query = db.execute.await_args.args[0]
+        expected_query = select(Users).where(Users.is_active.is_(True))
+        assert str(actual_query) == str(expected_query)
+
+    def test_update_user_applies_only_provided_fields(self):
+        db = make_async_session_mock()
+        repository = UserRepository(db)
+        user = SimpleNamespace(name="Old Name", email="old@example.com", document="111")
+
+        result = asyncio.run(
+            repository.update_user(
+                user,
+                {"name": "New Name", "email": "new@example.com"},
+            )
+        )
+
+        assert result is user
+        assert user.name == "New Name"
+        assert user.email == "new@example.com"
+        assert user.document == "111"
+        db.execute.assert_not_awaited()
+
+    def test_delete_user_sets_is_active_false(self):
+        db = make_async_session_mock()
+        repository = UserRepository(db)
+        user = SimpleNamespace(is_active=True)
+
+        asyncio.run(repository.delete_user(user))
+
+        assert user.is_active is False
+        db.execute.assert_not_awaited()
