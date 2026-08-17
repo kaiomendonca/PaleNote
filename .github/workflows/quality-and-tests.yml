@@ -13,6 +13,7 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
       ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
 
     steps:
       - name: Checkout code

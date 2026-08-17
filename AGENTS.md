@@ -12,7 +12,7 @@ Run everything through Poetry + Taskipy:
 - CI runs `lint` then `test` (`.github/workflows/quality-and-tests.yml`). Pre-commit runs `ruff --fix`, `ruff-format`, then the full test suite — so make tests pass before committing.
 
 ## Required setup
-`app/core/config.py` loads only `DATABASE_URL`, `LOG_LEVEL`, `ENVIRONMENT` from `.env` (extra vars like `REDIS_URL`, `SECRET_KEY` are ignored for now). All three are required at import time — even unit tests fail without a `.env` containing them. Copy from `.env.example`; the local `.env` is gitignored.
+`app/core/config.py` loads `DATABASE_URL`, `LOG_LEVEL`, `ENVIRONMENT`, `SECRET_KEY`, `JWT_ALGORITHM`, `ACCESS_TOKEN_EXPIRE_MINUTES`, `REFRESH_TOKEN_EXPIRE_DAYS` from `.env`. All are required at import time — even unit tests fail without a `.env` containing them. Copy from `.env.example`; the local `.env` is gitignored.
 
 ## Architecture
 Strict layered layout in `app/`: `routers/` (thin HTTP) → `services/` (business logic) → `repositories/` (DB access) → `models/` (SQLAlchemy ORM). Never touch the DB from routers; never put business logic in routers. Use dependency injection (`app/dependencies.py` provides `get_db`; sessions commit/rollback/close automatically).
