@@ -222,3 +222,6 @@ Note/
 
 # opencode local configuration
 .opencode/
+
+#docs
+docs/
