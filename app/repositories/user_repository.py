@@ -33,6 +33,12 @@ class UserRepository:
         user_by_email = result.scalar_one_or_none()
         return user_by_email
 
+    async def get_by_id(self, user_id: str) -> Users | None:
+        query = select(Users).where(Users.id_ == user_id)
+        result = await self.db.execute(query)
+        user = result.scalar_one_or_none()
+        return user
+
     async def list_all(self) -> list[Users]:
         query = select(Users).where(Users.is_active.is_(True))
         result = await self.db.execute(query)
