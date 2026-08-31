@@ -10,7 +10,7 @@ from pydantic import (
     model_validator,
 )
 
-from app.models.users import PersonType
+from app.models.users import PersonType, UserRole
 from app.schemas.validators import DocumentValidator, FieldValidator
 
 
@@ -54,6 +54,8 @@ class UserResponse(BaseModel):
     email: EmailStr
 
     person_type: PersonType
+
+    role: UserRole
 
     document: str
 

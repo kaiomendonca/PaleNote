@@ -12,7 +12,7 @@ from app.core.user_exceptions import (
     InvalidPasswordError,
     UserNotFoundError,
 )
-from app.models.users import PersonType, Users
+from app.models.users import PersonType, UserRole, Users
 from app.schemas.users import ChangePassword, UserCreate, UserUpdate
 from app.services.user_service import UserService
 
@@ -37,6 +37,7 @@ def make_user(**overrides) -> Users:
         "password_hash": "hash",
         "email": "user@example.com",
         "person_type": PersonType.INDIVIDUAL,
+        "role": UserRole.USER,
         "document": "12345678909",
         "created_at": datetime.now(timezone.utc),
         "is_active": True,
@@ -48,6 +49,8 @@ def make_user(**overrides) -> Users:
 def simulate_flush(user: Users) -> Users:
     user.id_ = user.id_ or str(uuid.uuid4())
     user.created_at = user.created_at or datetime.now(timezone.utc)
+    # O banco aplica o default de role (USER) no flush
+    user.role = user.role or UserRole.USER
     return user
 
 
@@ -71,6 +74,7 @@ class TestCreateUser:
         assert isinstance(result.id_, str)
         assert result.name == "Test User"
         assert result.person_type == PersonType.INDIVIDUAL
+        assert result.role == UserRole.USER
         assert created_user.password_hash != payload.password
         assert verify_password(payload.password, created_user.password_hash)
 

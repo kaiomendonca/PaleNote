@@ -15,6 +15,11 @@ class PersonType(str, Enum):
     COMPANY = "company"
 
 
+class UserRole(str, Enum):
+    ADMIN = "admin"
+    USER = "user"
+
+
 class Users(Base):
     __tablename__ = "users"
 
@@ -41,6 +46,13 @@ class Users(Base):
         DateTime,
         default=lambda: datetime.now(timezone.utc),
         server_default=func.now(),
+    )
+
+    role: Mapped[UserRole] = mapped_column(
+        SQLEnum(UserRole),
+        default=UserRole.USER,
+        server_default=UserRole.USER.value,
+        nullable=False,
     )
 
     is_active: Mapped[bool] = mapped_column(
