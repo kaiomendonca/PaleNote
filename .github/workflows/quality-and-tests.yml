@@ -14,6 +14,9 @@ jobs:
       LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
       ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      JWT_ALGORITHM: ${{ secrets.JWT_ALGORITHM }}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${{ secrets.ACCESS_TOKEN_EXPIRE_MINUTES }}
+      REFRESH_TOKEN_EXPIRE_DAYS: ${{ secrets.REFRESH_TOKEN_EXPIRE_DAYS }}
 
     steps:
       - name: Checkout code
