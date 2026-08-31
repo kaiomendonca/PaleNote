@@ -5,7 +5,9 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import AsyncSessionLocal
+from app.repositories.refresh_token_repository import RefreshTokenRepository
 from app.repositories.user_repository import UserRepository
+from app.services.auth_service import AuthService
 from app.services.invoice_service import InvoiceService
 
 
@@ -27,3 +29,18 @@ def get_invoice_service(db: Annotated[AsyncSession, Depends(get_db)]) -> Invoice
 
 def get_user_repository(db: Annotated[AsyncSession, Depends(get_db)]) -> UserRepository:
     return UserRepository(db)
+
+
+def get_refresh_token_repository(
+    db: Annotated[AsyncSession, Depends(get_db)],
+) -> RefreshTokenRepository:
+    return RefreshTokenRepository(db)
+
+
+def get_auth_service(
+    user_repository: Annotated[UserRepository, Depends(get_user_repository)],
+    refresh_token_repository: Annotated[
+        RefreshTokenRepository, Depends(get_refresh_token_repository)
+    ],
+) -> AuthService:
+    return AuthService(user_repository, refresh_token_repository)

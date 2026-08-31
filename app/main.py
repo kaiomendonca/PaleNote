@@ -4,6 +4,7 @@ from app.core.app_exception import AppExceptionError
 from app.core.handlers import app_exception_handler
 from app.core.lifespan import lifespan
 from app.core.logging import configure_logging
+from app.routers.auth import router as auth_router
 from app.routers.health import router as health_router
 
 configure_logging()
@@ -34,6 +35,10 @@ openapi_tags = [
         "name": "health",
         "description": ("API and dependency health status (PostgreSQL and Redis)."),
     },
+    {
+        "name": "auth",
+        "description": "User authentication and token management.",
+    },
 ]
 
 app = FastAPI(
@@ -59,3 +64,4 @@ app = FastAPI(
 app.add_exception_handler(AppExceptionError, app_exception_handler)
 
 app.include_router(health_router)
+app.include_router(auth_router)
