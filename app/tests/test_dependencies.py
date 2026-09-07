@@ -10,7 +10,7 @@ from app.core.auth_exceptions import (
     TokenExpiredError,
 )
 from app.core.config import settings
-from app.core.security import create_access_token
+from app.core.security import create_access_token, create_refresh_token
 from app.dependencies import get_current_active_user, get_current_user
 from app.models.users import PersonType, UserRole, Users
 
@@ -100,6 +100,34 @@ class TestGetCurrentUserErrors:
 
         with pytest.raises(InvalidTokenError):
             asyncio.run(get_current_user(access_token=token, repository=repository))
+
+    def test_raises_when_token_is_not_an_access_token(self):
+        repository = make_repository_mock()
+        refresh_token = create_refresh_token("user-id")
+
+        with pytest.raises(InvalidTokenError):
+            asyncio.run(
+                get_current_user(access_token=refresh_token, repository=repository)
+            )
+
+        # Não deve sequer tocar o banco para um token não-access
+        repository.get_by_id.assert_not_called()
+
+    def test_raises_when_token_has_no_type_claim(self):
+        import jwt as pyjwt
+
+        repository = make_repository_mock()
+        payload = {"sub": "user-id"}
+        no_type_token = pyjwt.encode(
+            payload, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM
+        )
+
+        with pytest.raises(InvalidTokenError):
+            asyncio.run(
+                get_current_user(access_token=no_type_token, repository=repository)
+            )
+
+        repository.get_by_id.assert_not_called()
 
 
 class TestGetCurrentActiveUser:

@@ -57,6 +57,8 @@ async def get_current_user(
     repository: Annotated[UserRepository, Depends(get_user_repository)],
 ) -> Users:
     payload = decode_token(access_token)
+    if payload.get("type") != "access":
+        raise InvalidTokenError()
     user = await repository.get_by_id(payload["sub"])
     if not user:
         raise InvalidTokenError()
