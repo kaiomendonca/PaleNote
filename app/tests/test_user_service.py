@@ -49,7 +49,6 @@ def make_user(**overrides) -> Users:
 def simulate_flush(user: Users) -> Users:
     user.id_ = user.id_ or str(uuid.uuid4())
     user.created_at = user.created_at or datetime.now(timezone.utc)
-    # O banco aplica o default de role (USER) no flush
     user.role = user.role or UserRole.USER
     return user
 
