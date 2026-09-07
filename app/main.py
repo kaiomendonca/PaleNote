@@ -6,6 +6,7 @@ from app.core.lifespan import lifespan
 from app.core.logging import configure_logging
 from app.routers.auth import router as auth_router
 from app.routers.health import router as health_router
+from app.routers.users import router as users_router
 
 configure_logging()
 
@@ -39,6 +40,10 @@ openapi_tags = [
         "name": "auth",
         "description": "User authentication and token management.",
     },
+    {
+        "name": "users",
+        "description": "User profile management.",
+    },
 ]
 
 app = FastAPI(
@@ -65,3 +70,4 @@ app.add_exception_handler(AppExceptionError, app_exception_handler)
 
 app.include_router(health_router)
 app.include_router(auth_router)
+app.include_router(users_router)
